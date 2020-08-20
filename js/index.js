@@ -3,8 +3,8 @@
  * @author: shenysun
  * @Date: 2020/06/11 11:59:15
  */
-var breadth_first_search = /** @class */ (function () {
-    function breadth_first_search() {
+var search = /** @class */ (function () {
+    function search() {
         this.textField = document.getElementById("hello");
         this.list = [];
         if (this.textField)
@@ -13,7 +13,7 @@ var breadth_first_search = /** @class */ (function () {
         this.line = 3;
         this.initList();
     }
-    breadth_first_search.prototype.initList = function () {
+    search.prototype.initList = function () {
         for (var i = 0; i < this.line; i++) {
             var tempList = [];
             for (var j = this.startIdx; j < this.startIdx + this.line; j++) {
@@ -23,7 +23,7 @@ var breadth_first_search = /** @class */ (function () {
         }
         console.log(this.list);
     };
-    breadth_first_search.prototype.main = function () {
+    search.prototype.main = function () {
         this.eggFlag = {};
         this.allCount = 0;
         this.count = 1;
@@ -41,7 +41,7 @@ var breadth_first_search = /** @class */ (function () {
     /**
      * 深度优先遍历
      */
-    breadth_first_search.prototype.dfs = function (v2) {
+    search.prototype.dfs = function (v2) {
         var tempX = v2.x;
         var tempY = v2.y;
         for (var i = tempX - 1; i <= tempX + 1; i++) {
@@ -71,7 +71,7 @@ var breadth_first_search = /** @class */ (function () {
     /**
      * 广度优先遍历
      */
-    breadth_first_search.prototype.bfs = function (v2) {
+    search.prototype.bfs = function (v2) {
         this.eggFlag[this.list[v2.x][v2.y]] = true;
         var quene = [];
         quene.push(v2);
@@ -104,14 +104,14 @@ var breadth_first_search = /** @class */ (function () {
             }
         }
     };
-    breadth_first_search.prototype.contain = function (tempX, tempY) {
+    search.prototype.contain = function (tempX, tempY) {
         if (this.list[tempX]) {
             var temp = this.list[tempX][tempY];
             return !isNaN(temp);
         }
         return false;
     };
-    return breadth_first_search;
+    return search;
 }());
 /**
  * @description: 二维数组下标类
@@ -125,4 +125,4 @@ var Vector2 = /** @class */ (function () {
     }
     return Vector2;
 }());
-new breadth_first_search();
+new search();

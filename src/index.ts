@@ -3,7 +3,7 @@
  * @author: shenysun
  * @Date: 2020/06/11 11:59:15
  */
-class breadth_first_search {
+class search {
     private textField: HTMLElement | null;
     private list: Array<Array<number>>;
     private eggFlag: Object; // 遍历标识
@@ -139,4 +139,4 @@ class Vector2 {
     x: number;
     y: number;
 }
-new breadth_first_search();
+new search();
