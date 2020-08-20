@@ -1,5 +1,5 @@
 /**
- * @description: 广度优先遍历
+ * @description: 广度/深度 优先遍历
  * @author: shenysun
  * @Date: 2020/06/11 11:59:15
  */
@@ -18,7 +18,7 @@ class breadth_first_search {
         if (this.textField)
             this.textField.addEventListener('click', this.main.bind(this));
         this.startIdx = 100;
-        this.line = 80;
+        this.line = 3;
         this.initList();
     }
 
@@ -30,6 +30,7 @@ class breadth_first_search {
             }
             this.list.push(tempList);
         }
+        console.log(this.list);
     }
 
     private main(): void {
@@ -40,23 +41,28 @@ class breadth_first_search {
         var startX: number = Math.floor(Math.random() * this.line);
         var startY: number = Math.floor(Math.random() * this.line);
         this.eggFlag[this.list[startX][startY]] = true;
-        this.bfs_normal(new Vector2(startX, startY));
-        // this.bfs_recursive(new Vector2(startX, startY));
+        console.log(`开始： ${this.list[startX][startY]}`);
+        this.bfs(new Vector2(startX, startY));
+        // this.dfs(new Vector2(startX, startY));
         var endTime: number = new Date().getTime();
         this.textField.textContent = `${endTime - startTime}毫秒，总次数：${this.allCount}，有效次数：${this.count}`;
-        console.log(Object.keys(this.eggFlag).length);
+        console.log("遍历有效次数:" + Object.keys(this.eggFlag).length);
     }
 
     /**
-     * 递归
+     * 深度优先遍历
      */
-    private bfs_recursive(v2: Vector2): void {
+    private dfs(v2: Vector2): void {
         var tempX: number = v2.x;
         var tempY: number = v2.y;
         for (let i = tempX - 1; i <= tempX + 1; i++) {
             for (let j = tempY - 1; j <= tempY + 1; j++) {
                 this.allCount++;
                 if (i == tempX && j == tempY) {
+                    continue;
+                }
+                // 四个方向
+                if (Math.abs(i - tempX) + Math.abs(j - tempY) == 2) {
                     continue;
                 }
                 if (!this.contain(i, j)) {
@@ -68,15 +74,16 @@ class breadth_first_search {
                 }
                 this.count++;
                 this.eggFlag[val] = true;
-                this.bfs_recursive(new Vector2(i, j));
+                console.log(`第${this.count - 1}次：${this.list[tempX][tempY]} -> ${val}`);
+                this.dfs(new Vector2(i, j));
             }
         }
     }
 
     /**
-     * 非递归
+     * 广度优先遍历
      */
-    private bfs_normal(v2: Vector2): void {
+    private bfs(v2: Vector2): void {
         this.eggFlag[this.list[v2.x][v2.y]] = true;
         var quene: Array<Vector2> = [];
         quene.push(v2);
@@ -90,6 +97,10 @@ class breadth_first_search {
                     if (i == tempX && j == tempY) {
                         continue;
                     }
+                    // 四个方向
+                    if (Math.abs(i - tempX) + Math.abs(j - tempY) == 2) {
+                        continue;
+                    }
                     if (!this.contain(i, j)) {
                         continue;
                     }
@@ -99,6 +110,7 @@ class breadth_first_search {
                     }
                     this.count++;
                     this.eggFlag[val] = true;
+                    console.log(`第${this.count - 1}次：${this.list[tempX][tempY]} -> ${val}`);
                     quene.push(new Vector2(i, j));
                 }
             }

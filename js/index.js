@@ -1,5 +1,5 @@
 /**
- * @description: 广度优先遍历
+ * @description: 广度/深度 优先遍历
  * @author: shenysun
  * @Date: 2020/06/11 11:59:15
  */
@@ -10,7 +10,7 @@ var breadth_first_search = /** @class */ (function () {
         if (this.textField)
             this.textField.addEventListener('click', this.main.bind(this));
         this.startIdx = 100;
-        this.line = 80;
+        this.line = 3;
         this.initList();
     }
     breadth_first_search.prototype.initList = function () {
@@ -21,6 +21,7 @@ var breadth_first_search = /** @class */ (function () {
             }
             this.list.push(tempList);
         }
+        console.log(this.list);
     };
     breadth_first_search.prototype.main = function () {
         this.eggFlag = {};
@@ -30,22 +31,27 @@ var breadth_first_search = /** @class */ (function () {
         var startX = Math.floor(Math.random() * this.line);
         var startY = Math.floor(Math.random() * this.line);
         this.eggFlag[this.list[startX][startY]] = true;
-        this.bfs_normal(new Vector2(startX, startY));
-        // this.bfs_recursive(new Vector2(startX, startY));
+        console.log("\u5F00\u59CB\uFF1A " + this.list[startX][startY]);
+        this.bfs(new Vector2(startX, startY));
+        // this.dfs(new Vector2(startX, startY));
         var endTime = new Date().getTime();
         this.textField.textContent = endTime - startTime + "\u6BEB\u79D2\uFF0C\u603B\u6B21\u6570\uFF1A" + this.allCount + "\uFF0C\u6709\u6548\u6B21\u6570\uFF1A" + this.count;
-        console.log(Object.keys(this.eggFlag).length);
+        console.log("遍历有效次数:" + Object.keys(this.eggFlag).length);
     };
     /**
-     * 递归
+     * 深度优先遍历
      */
-    breadth_first_search.prototype.bfs_recursive = function (v2) {
+    breadth_first_search.prototype.dfs = function (v2) {
         var tempX = v2.x;
         var tempY = v2.y;
         for (var i = tempX - 1; i <= tempX + 1; i++) {
             for (var j = tempY - 1; j <= tempY + 1; j++) {
                 this.allCount++;
                 if (i == tempX && j == tempY) {
+                    continue;
+                }
+                // 四个方向
+                if (Math.abs(i - tempX) + Math.abs(j - tempY) == 2) {
                     continue;
                 }
                 if (!this.contain(i, j)) {
@@ -57,14 +63,15 @@ var breadth_first_search = /** @class */ (function () {
                 }
                 this.count++;
                 this.eggFlag[val] = true;
-                this.bfs_recursive(new Vector2(i, j));
+                console.log("\u7B2C" + (this.count - 1) + "\u6B21\uFF1A" + this.list[tempX][tempY] + " -> " + val);
+                this.dfs(new Vector2(i, j));
             }
         }
     };
     /**
-     * 非递归
+     * 广度优先遍历
      */
-    breadth_first_search.prototype.bfs_normal = function (v2) {
+    breadth_first_search.prototype.bfs = function (v2) {
         this.eggFlag[this.list[v2.x][v2.y]] = true;
         var quene = [];
         quene.push(v2);
@@ -78,6 +85,10 @@ var breadth_first_search = /** @class */ (function () {
                     if (i == tempX && j == tempY) {
                         continue;
                     }
+                    // 四个方向
+                    if (Math.abs(i - tempX) + Math.abs(j - tempY) == 2) {
+                        continue;
+                    }
                     if (!this.contain(i, j)) {
                         continue;
                     }
@@ -87,6 +98,7 @@ var breadth_first_search = /** @class */ (function () {
                     }
                     this.count++;
                     this.eggFlag[val] = true;
+                    console.log("\u7B2C" + (this.count - 1) + "\u6B21\uFF1A" + this.list[tempX][tempY] + " -> " + val);
                     quene.push(new Vector2(i, j));
                 }
             }
